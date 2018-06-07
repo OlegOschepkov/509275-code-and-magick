@@ -15,7 +15,7 @@ var TEXT_COLOR = '#000';
 var TEXT_LINE_1ST = 'Ура вы победили!';
 var TEXT_LINE_2ND = 'Список результатов:';
 var YOUR_BAR_COLOR = 'rgba(255, 0, 0, 1)';
-var OTHER_BAR_COLOR = 'rgba' + '(5, 7, 255,'; // Перенес конец строки с рандомом в цикл, чтобы разнообразить цвета.
+var OTHER_BAR_COLOR = 'rgba(5, 7, 255,'; // Перенес конец строки с рандомом в цикл, чтобы разнообразить цвета.
 
 var renderCloud = function (ctx, x, y, color) {
   ctx.fillStyle = color;
