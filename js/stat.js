@@ -34,16 +34,16 @@ var getMaxElement = function (arr) {
   return maxElement;
 };
 
-var barColor = function (ctx, names) {
-  if (names === 'Вы') {
+var getBarColor = function (ctx, name) {
+  if (name === 'Вы') {
     ctx.fillStyle = YOUR_BAR_COLOR;
   } else {
     ctx.fillStyle = OTHER_BAR_COLOR + Math.random() + ')';
   }
 };
 
-var renderBar = function (ctx, x, y, width, height, names) {
-  barColor(ctx, names);
+var renderBar = function (ctx, x, y, width, height, name) {
+  getBarColor(ctx, name);
   ctx.fillRect(x, y, width, height);
 };
 
