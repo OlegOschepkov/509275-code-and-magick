@@ -62,19 +62,20 @@ var generateName = function (names, surnames) {
   return fullname;
 };
 
-var generateWizards = function (array, name, surname, coatColor, eyesColor) {
+var generateWizards = function (name, surname, coatColor, eyesColor) {
+  var newWizards = [];
   for (var i = 0; i < NUMBER_OF_WIZARDS; i++) {
     var wizard = {
       name: generateName(name, surname),
       coatColor: getRandomElement(coatColor),
       eyesColor: getRandomElement(eyesColor)
     };
-    array.push(wizard);
+    newWizards.push(wizard);
   }
-  return array;
+  return newWizards;
 };
 
-wizards = generateWizards(wizards, wizardNames, wizardSurnames, coatColors, eyesColors);
+wizards = generateWizards(wizardNames, wizardSurnames, coatColors, eyesColors);
 
 var renderWizard = function (wizard) {
   var wizardElement = similarListTemplate.cloneNode(true);
