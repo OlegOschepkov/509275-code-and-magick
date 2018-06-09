@@ -43,7 +43,6 @@ var eyesColors = [
   'green'
 ];
 var NUMBER_OF_WIZARDS = 4;
-var wizards = [];
 
 var getRandomElement = function (array) {
   var arrayElement = array[Math.floor(Math.random() * array.length)];
@@ -75,7 +74,7 @@ var generateWizards = function (name, surname, coatColor, eyesColor) {
   return newWizards;
 };
 
-wizards = generateWizards(wizardNames, wizardSurnames, coatColors, eyesColors);
+var wizards = generateWizards(wizardNames, wizardSurnames, coatColors, eyesColors);
 
 var renderWizard = function (wizard) {
   var wizardElement = similarListTemplate.cloneNode(true);
