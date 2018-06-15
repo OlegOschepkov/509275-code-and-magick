@@ -57,12 +57,12 @@ var getRandomElement = function (array) {
 
 var generateName = function (names, surnames) {
   var fullname;
-  var i = getRandomElement(surnames);
-  var j = getRandomElement(names);
+  var surname = getRandomElement(surnames);
+  var name = getRandomElement(names);
   if (Math.random() > 0.5) {
-    fullname = i + ' ' + j;
+    fullname = name + ' ' + surname;
   } else {
-    fullname = j + ' ' + i;
+    fullname = surname + ' ' + name;
   }
   return fullname;
 };
@@ -159,6 +159,11 @@ userDialogClose.addEventListener('keydown', function (evt) {
 
 // Покрасочный цех
 // var playerSetup = document.querySelector('.setup-player');
+// почему не работает var playerFireballColor = playerColors.querySelector('.setup-fireball'); ?
+// setup.js:197 Uncaught TypeError: Cannot read property 'setAttribute' of null
+// at setColor (setup.js:197)
+// at HTMLDivElement.<anonymous> (setup.js:209)
+
 var playerColors = document.querySelector('.setup-wizard');
 var playerCoatColor = playerColors.querySelector('.wizard-coat');
 var playerEyesColor = playerColors.querySelector('.wizard-eyes');
@@ -167,7 +172,7 @@ var inputCoatColor = document.querySelector('input[name="coat-color"]');
 var playerFireballColor = document.querySelector('.setup-fireball');
 var inputFireballColor = document.querySelector('input[name="fireball-color"]');
 
-var arrayPicker = function (evt) {
+var pickColorArray = function (evt) {
   if (evt.target === playerCoatColor) {
     return coatColors;
   } else if (evt.target === playerEyesColor) {
@@ -183,7 +188,7 @@ var playerOutlookColors = [
 ];
 
 var setColor = function (evt, inputField) {
-  var blockColor = getRandomElement(arrayPicker(evt));
+  var blockColor = getRandomElement(pickColorArray(evt));
   var attribute;
   if (playerOutlookColors.includes(evt.target)) {
     attribute = 'fill: ';
