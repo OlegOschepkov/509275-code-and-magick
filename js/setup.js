@@ -1,7 +1,6 @@
 'use strict';
 
 var userDialog = document.querySelector('.setup');
-userDialog.classList.remove('hidden');
 
 var similarListElement = document.querySelector('.setup-similar-list');
 var similarListTemplate = document.querySelector('#similar-wizard-template')
@@ -42,6 +41,13 @@ var eyesColors = [
   'yellow',
   'green'
 ];
+var fireballColors = [
+  '#ee4830',
+  '#30a8ee',
+  '#5ce6c0',
+  '#e848d5',
+  '#e6e848'
+];
 var NUMBER_OF_WIZARDS = 4;
 
 var getRandomElement = function (array) {
@@ -54,9 +60,9 @@ var generateName = function (names, surnames) {
   var i = getRandomElement(surnames);
   var j = getRandomElement(names);
   if (Math.random() > 0.5) {
-    fullname = surnames[i] + ' ' + names[j];
+    fullname = i + ' ' + j;
   } else {
-    fullname = names[j] + ' ' + surnames[i];
+    fullname = j + ' ' + i;
   }
   return fullname;
 };
@@ -95,3 +101,108 @@ for (var i = 0; i < wizards.length; i++) {
 similarListElement.appendChild(fragment);
 
 userDialog.querySelector('.setup-similar').classList.remove('hidden');
+
+// открытие/закрытие окна настройки персонажа
+
+var userDialogOpen = document.querySelector('.setup-open');
+var userDialogClose = document.querySelector('.setup-close');
+var userNameInput = document.querySelector('.setup-user-name');
+var ESC_KEYCODE = 27;
+var ENTER_KEYCODE = 13;
+
+userDialogOpen.addEventListener('click', function () {
+  userDialog.classList.remove('hidden');
+});
+
+userDialogClose.addEventListener('click', function () {
+  userDialog.classList.add('hidden');
+});
+
+var onPopupEscPress = function (evt) {
+  if (evt.target !== userNameInput && evt.keyCode === ESC_KEYCODE) {
+    closePopup();
+  } else {
+    return;
+  }
+  // как написать условие щелчка за пределами окна настройки, чтобы вызвать его закрытие?
+};
+
+var openPopup = function () {
+  userDialog.classList.remove('hidden');
+  document.addEventListener('keydown', onPopupEscPress);
+};
+
+var closePopup = function () {
+  userDialog.classList.add('hidden');
+  document.removeEventListener('keydown', onPopupEscPress);
+};
+
+userDialogOpen.addEventListener('click', function () {
+  openPopup();
+});
+
+userDialogOpen.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === ENTER_KEYCODE) {
+    openPopup();
+  }
+});
+
+userDialogClose.addEventListener('click', function () {
+  closePopup();
+});
+
+userDialogClose.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === ENTER_KEYCODE) {
+    closePopup();
+  }
+});
+
+// Покрасочный цех
+// var playerSetup = document.querySelector('.setup-player');
+var playerColors = document.querySelector('.setup-wizard');
+var playerCoatColor = playerColors.querySelector('.wizard-coat');
+var playerEyesColor = playerColors.querySelector('.wizard-eyes');
+var inputEyesColor = document.querySelector('input[name="eyes-color"]');
+var inputCoatColor = document.querySelector('input[name="coat-color"]');
+var playerFireballColor = document.querySelector('.setup-fireball');
+var inputFireballColor = document.querySelector('input[name="fireball-color"]');
+
+var arrayPicker = function (evt) {
+  if (evt.target === playerCoatColor) {
+    return coatColors;
+  } else if (evt.target === playerEyesColor) {
+    return eyesColors;
+  } else {
+    return fireballColors;
+  }
+};
+
+var playerOutlookColors = [
+  playerCoatColor,
+  playerEyesColor
+];
+
+var setColor = function (evt, inputField) {
+  var blockColor = getRandomElement(arrayPicker(evt));
+  var attribute;
+  if (playerOutlookColors.includes(evt.target)) {
+    attribute = 'fill: ';
+    evt.target.setAttribute('style', attribute + blockColor);
+  } else {
+    attribute = 'background-color: ';
+    evt.target.setAttribute('style', attribute + blockColor);
+  }
+  inputField.setAttribute('value', blockColor);
+};
+
+playerCoatColor.addEventListener('click', function (evt) {
+  setColor(evt, inputCoatColor);
+});
+
+playerEyesColor.addEventListener('click', function (evt) {
+  setColor(evt, inputEyesColor);
+});
+
+playerFireballColor.addEventListener('click', function (evt) {
+  setColor(evt, inputFireballColor);
+});
