@@ -124,7 +124,6 @@ var onPopupEscPress = function (evt) {
   } else {
     return;
   }
-  // как написать условие щелчка за пределами окна настройки, чтобы вызвать его закрытие?
 };
 
 var openPopup = function () {
@@ -135,6 +134,7 @@ var openPopup = function () {
 var closePopup = function () {
   userDialog.classList.add('hidden');
   document.removeEventListener('keydown', onPopupEscPress);
+  userDialog.removeAttribute('style');
 };
 
 userDialogOpen.addEventListener('click', function () {
