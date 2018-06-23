@@ -3,10 +3,6 @@
 var userDialog = document.querySelector('.setup');
 var dialogHandler = userDialog.querySelector('.upload');
 
-if (userDialog.classList.contains('.hidden')) {
-  userDialog.removeAttribute('style');
-}
-
 dialogHandler.addEventListener('mousedown', function (evt) {
   evt.preventDefault();
 
