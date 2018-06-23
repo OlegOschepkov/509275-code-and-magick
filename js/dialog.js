@@ -39,8 +39,8 @@ dialogHandler.addEventListener('mousedown', function (evt) {
     upEvt.preventDefault();
 
     if (dragged) {
-      var onClickPreventDefault = function (evt) {
-        evt.preventDefault();
+      var onClickPreventDefault = function (preventEvt) {
+        preventEvt.preventDefault();
         dialogHandler.removeEventListener('click', onClickPreventDefault);
       };
       dialogHandler.addEventListener('click', onClickPreventDefault);
