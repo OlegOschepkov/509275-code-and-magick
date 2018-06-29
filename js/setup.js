@@ -1,34 +1,33 @@
 'use strict';
 
-(function () {
-  window.setup = {
-    userDialog: document.querySelector('.setup')
-  };
-
+window.setup = (function () {
+  var userDialog = document.querySelector('.setup');
   var similarListElement = document.querySelector('.setup-similar-list');
   var similarListTemplate = document.querySelector('#similar-wizard-template')
     .content
     .querySelector('.setup-similar-item');
-  var wizardNames = [
-    'Иван',
-    'Хуан Себастьян',
-    'Мария',
-    'Кристоф',
-    'Виктор',
-    'Юлия',
-    'Люпита',
-    'Вашингтон'
-  ];
-  var wizardSurnames = [
-    'да Марья',
-    'Верон',
-    'Мирабелла',
-    'Вальц',
-    'Онопко',
-    'Топольницкая',
-    'Нионго',
-    'Ирвинг'
-  ];
+  var form = userDialog.querySelector('.setup-wizard-form');
+
+  // var wizardNames = [
+  //   'Иван',
+  //   'Хуан Себастьян',
+  //   'Мария',
+  //   'Кристоф',
+  //   'Виктор',
+  //   'Юлия',
+  //   'Люпита',
+  //   'Вашингтон'
+  // ];
+  // var wizardSurnames = [
+  //   'да Марья',
+  //   'Верон',
+  //   'Мирабелла',
+  //   'Вальц',
+  //   'Онопко',
+  //   'Топольницкая',
+  //   'Нионго',
+  //   'Ирвинг'
+  // ];
   var coatColors = [
     'rgb(101, 137, 164)',
     'rgb(241, 43, 107)',
@@ -58,52 +57,75 @@
     return arrayElement;
   };
 
-  var generateName = function (names, surnames) {
-    var fullname;
-    var surname = getRandomElement(surnames);
-    var name = getRandomElement(names);
-    if (Math.random() > 0.5) {
-      fullname = name + ' ' + surname;
-    } else {
-      fullname = surname + ' ' + name;
-    }
-    return fullname;
-  };
+  // var generateName = function (names, surnames) {
+  //   var fullname;
+  //   var surname = getRandomElement(surnames);
+  //   var name = getRandomElement(names);
+  //   if (Math.random() > 0.5) {
+  //     fullname = name + ' ' + surname;
+  //   } else {
+  //     fullname = surname + ' ' + name;
+  //   }
+  //   return fullname;
+  // };
 
-  var generateWizards = function (name, surname, coatColor, eyesColor) {
-    var newWizards = [];
-    for (var i = 0; i < NUMBER_OF_WIZARDS; i++) {
-      var wizard = {
-        name: generateName(name, surname),
-        coatColor: getRandomElement(coatColor),
-        eyesColor: getRandomElement(eyesColor)
-      };
-      newWizards.push(wizard);
-    }
-    return newWizards;
-  };
+  // var generateWizards = function (name, surname, coatColor, eyesColor) {
+  //   var newWizards = [];
+  //   for (var i = 0; i < NUMBER_OF_WIZARDS; i++) {
+  //     var wizard = {
+  //       name: generateName(name, surname),
+  //       coatColor: getRandomElement(coatColor),
+  //       eyesColor: getRandomElement(eyesColor)
+  //     };
+  //     newWizards.push(wizard);
+  //   }
+  //   return newWizards;
+  // };
 
-  var wizards = generateWizards(wizardNames, wizardSurnames, coatColors, eyesColors);
+  // var wizards = generateWizards(wizardNames, wizardSurnames, coatColors, eyesColors);
 
   var renderWizard = function (wizard) {
     var wizardElement = similarListTemplate.cloneNode(true);
 
     wizardElement.querySelector('.setup-similar-label').textContent = wizard.name;
-    wizardElement.querySelector('.wizard-coat').style.fill = wizard.coatColor;
+    wizardElement.querySelector('.wizard-coat').style.fill = wizard.colorCoat;
     wizardElement.querySelector('.wizard-eyes').style.fill = wizard.eyesColor;
 
     return wizardElement;
   };
 
-  var fragment = document.createDocumentFragment();
-
-  for (var i = 0; i < wizards.length; i++) {
-    fragment.appendChild(renderWizard(wizards[i]));
+  function shuffle(array) {
+    var randomIndex;
+    var temp;
+    for (var i = array.length - 1; i > 0; i--) {
+      randomIndex = Math.floor(Math.random() * (i + 1));
+      temp = array[i];
+      array[i] = array[randomIndex];
+      array[randomIndex] = temp;
+    }
+    return array;
   }
 
-  similarListElement.appendChild(fragment);
+  var onLoad = function (wizards) {
+    var fragment = document.createDocumentFragment();
+    var randomizedWizards = shuffle(wizards);
+    for (var i = 0; i < NUMBER_OF_WIZARDS; i++) {
+      fragment.appendChild(renderWizard(randomizedWizards[i]));
+    }
+    similarListElement.appendChild(fragment);
 
-  window.setup.userDialog.querySelector('.setup-similar').classList.remove('hidden');
+    userDialog.querySelector('.setup-similar').classList.remove('hidden');
+  };
+
+  var onError = function (errorMessage) {
+    var node = document.createElement('div');
+    node.style = 'z-index: 100; width: 500px; height: 150px; position: absolute; top: 50%; left: 50%; transform: translateY(-50%) translateX(-50%); font-size: 30px; color: black; background-color: red; text-align: center';
+    node.textContent = errorMessage;
+    document.body.insertAdjacentElement('afterbegin', node);
+  };
+
+  window.backend.load(onLoad, onError);
+
 
   // открытие/закрытие окна настройки персонажа
 
@@ -114,11 +136,11 @@
   var ENTER_KEYCODE = 13;
 
   userDialogOpen.addEventListener('click', function () {
-    window.setup.userDialog.classList.remove('hidden');
+    userDialog.classList.remove('hidden');
   });
 
   userDialogClose.addEventListener('click', function () {
-    window.setup.userDialog.classList.add('hidden');
+    userDialog.classList.add('hidden');
   });
 
   var onPopupEscPress = function (evt) {
@@ -130,14 +152,14 @@
   };
 
   var openPopup = function () {
-    window.setup.userDialog.classList.remove('hidden');
+    userDialog.classList.remove('hidden');
     document.addEventListener('keydown', onPopupEscPress);
   };
 
   var closePopup = function () {
-    window.setup.userDialog.classList.add('hidden');
+    userDialog.classList.add('hidden');
     document.removeEventListener('keydown', onPopupEscPress);
-    window.setup.userDialog.removeAttribute('style');
+    userDialog.removeAttribute('style');
   };
 
   userDialogOpen.addEventListener('click', function () {
@@ -214,4 +236,20 @@
   playerFireballColor.addEventListener('click', function (evt) {
     setColor(evt, inputFireballColor);
   });
+
+  var sendSuccess = function () {
+    userDialog.classList.add('hidden');
+  };
+
+  form.addEventListener('submit', function (evt) {
+    window.backend.save(new FormData(form), sendSuccess, onError);
+    evt.preventDefault();
+  });
+
+
+  return {
+    userDialog: userDialog,
+    renderWizard: renderWizard,
+    similarListElement: similarListElement
+  };
 })();
