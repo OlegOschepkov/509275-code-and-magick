@@ -18,6 +18,7 @@
     };
   };
 
+
   var getRank = function (wizard) {
     var rank = 0;
 
@@ -52,6 +53,8 @@
     );
   };
 
+  var debouncedUpdateWizards = debounce(updateWizards);
+
   // window.setup.wizardColorChangeHandlers.onEyesChange = debounce(function (color) {
   //   eyesColor = color;
   //   updateWizards();
@@ -59,7 +62,7 @@
 
   window.setup.wizardColorChangeHandlers.onEyesChange = function (color) {
     eyesColor = color;
-    debounce(updateWizards());
+    debouncedUpdateWizards();
   };
 
   // window.setup.wizardColorChangeHandlers.onCoatChange = debounce(function (color) {
@@ -69,7 +72,7 @@
 
   window.setup.wizardColorChangeHandlers.onCoatChange = function (color) {
     coatColor = color;
-    debounce(updateWizards());
+    debouncedUpdateWizards();
   };
 
   var successHandler = function (data) {
