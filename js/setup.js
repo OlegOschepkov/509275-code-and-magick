@@ -158,7 +158,7 @@ window.setup = (function () {
     }
   };
 
-  var wizardElementColor = function (evt, callback) {
+  var setWizardElementColor = function (evt, callback) {
     var blockColor = getRandomElement(pickColorArray(evt));
     var attribute;
     if (evt.target.classList.contains('setup-fireball')) {
@@ -172,15 +172,15 @@ window.setup = (function () {
   };
 
   playerCoatColor.addEventListener('click', function (evt) {
-    wizardElementColor(evt, playerOutlookColors.onCoatChange);
+    setWizardElementColor(evt, playerOutlookColors.onCoatChange);
   });
 
   playerEyesColor.addEventListener('click', function (evt) {
-    wizardElementColor(evt, playerOutlookColors.onEyesChange);
+    setWizardElementColor(evt, playerOutlookColors.onEyesChange);
   });
 
   playerFireballColor.addEventListener('click', function (evt) {
-    wizardElementColor(evt, playerOutlookColors.onFireballchange);
+    setWizardElementColor(evt, playerOutlookColors.onFireballchange);
   });
 
   var sendSuccess = function () {
@@ -192,13 +192,14 @@ window.setup = (function () {
     evt.preventDefault();
   });
 
-  window.wizard = playerOutlookColors;
+  var wizardColorChangeHandlers = playerOutlookColors;
 
   return {
     userDialog: userDialog,
     similarListElement: similarListElement,
     onError: onError,
     similarListTemplate: similarListTemplate,
-    getRandomElement: getRandomElement
+    getRandomElement: getRandomElement,
+    wizardColorChangeHandlers: wizardColorChangeHandlers
   };
 })();

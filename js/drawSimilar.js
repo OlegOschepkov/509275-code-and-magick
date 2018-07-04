@@ -1,5 +1,5 @@
 'use strict';
-window.render = (function () {
+window.drawSimilar = (function () {
   var wizardTemplate = document.querySelector('#similar-wizard-template');
 
   var renderWizard = function (wizard) {
@@ -17,8 +17,8 @@ window.render = (function () {
   var similar = document.querySelector('.setup-similar');
   var similarList = document.querySelector('.setup-similar-list');
 
-  var render = function (data) {
-    var takeNumber = data.length > 4 ? 4 : data.length;
+  var renderAllWizards = function (data) {
+    var takeNumber = Math.min(data.length, 4);
     similarList.innerHTML = '';
     for (var i = 0; i < takeNumber; i++) {
       similarList.appendChild(renderWizard(data[i]));
@@ -29,6 +29,6 @@ window.render = (function () {
 
   return {
     renderWizard: renderWizard,
-    render: render
+    renderAllWizards: renderAllWizards
   };
 })();
